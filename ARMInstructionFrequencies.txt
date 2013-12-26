@@ -1,121 +1,114 @@
-From arm-linux-androideabi-objdump -d libchromeview_prebuilt.so > sample.s
+From armMissinglinuxMissingandroideabiMissingobjdump Missingd libchromeview_prebuilt.so > sample.s
 This .so is 2gb in size with symbols so it is a pretty good indicator of the actual
 distribution of the instructions.
 
-Instruction        ldr is used    1181133 times
-Instruction        mov is used    1128847 times
-Instruction        add is used    1065935 times
-Instruction         bl is used     835527 times
-Instruction          b is used     547924 times
-Instruction        str is used     538433 times
-Instruction        cmp is used     330601 times
-Instruction       movs is used     299484 times
-Instruction        cbz is used     155987 times
-Instruction        blx is used     135995 times
-Instruction        pop is used     118732 times
-Instruction       push is used     113136 times
-Instruction      ldmia is used      84363 times
-Instruction       ldrb is used      70881 times
-Instruction        sub is used      69208 times
-Instruction       cbnz is used      61974 times
-Instruction       subs is used      55950 times
-Instruction         it is used      55679 times
-Instruction       strb is used      52617 times
-Instruction      stmia is used      40441 times
-Instruction      stmdb is used      34525 times
-Instruction       lsls is used      25438 times
-Instruction        and is used      24389 times
-Instruction        orr is used      23024 times
-Instruction       movw is used      21616 times
-Instruction       vldr is used      20493 times
-Instruction         bx is used      18856 times
-Instruction       ldrd is used      15264 times
-Instruction        asr is used      15170 times
-Instruction       strd is used      15058 times
-Instruction       vmov is used      15012 times
-Instruction        rsb is used      14290 times
-Instruction        lsr is used      10236 times
-Instruction       ldrh is used       9915 times
-Instruction       ubfx is used       9384 times
-Instruction       vstr is used       8072 times
-Instruction       vmrs is used       7408 times
-Instruction        mla is used       7381 times
-Instruction        bic is used       7040 times
-Instruction        adc is used       6996 times
-Instruction        eor is used       6673 times
-Instruction        tst is used       6197 times
-Instruction       uxtb is used       6075 times
-Instruction       strh is used       6019 times
-Instruction        mvn is used       4914 times
-Instruction       muls is used       4801 times
-Instruction        mul is used       4467 times
-Instruction        neg is used       4309 times
-Instruction        bfi is used       3496 times
-Instruction       sbcs is used       2375 times
-Instruction       uxth is used       2234 times
-Instruction       vpop is used       2185 times
-Instruction      vpush is used       2080 times
-Instruction      ldrsb is used       1939 times
-Instruction        tbb is used       1483 times
-Instruction      ldrsh is used       1446 times
-Instruction        dmb is used       1247 times
-Instruction      ldmdb is used       1191 times
-Instruction        sbc is used       1170 times
-Instruction        bfc is used       1167 times
-Instruction        lsl is used        954 times
-Instruction       movt is used        841 times
-Instruction       bics is used        825 times
-Instruction        teq is used        824 times
-Instruction      strex is used        787 times
-Instruction      ldrex is used        787 times
-Instruction        cmn is used        738 times
-Instruction       sxtb is used        731 times
-Instruction      umull is used        523 times
-Instruction        tbh is used        502 times
-Instruction       sbfx is used        493 times
-Instruction        orn is used        382 times
-Instruction       sxth is used        366 times
-Instruction       vorr is used        329 times
-Instruction     smulbb is used        287 times
-Instruction       veor is used        271 times
-Instruction      smull is used        264 times
-Instruction        nop is used        204 times
-Instruction        rev is used        161 times
-Instruction     vldmia is used        129 times
-Instruction        ror is used        114 times
-Instruction       vand is used        113 times
-Instruction      smlal is used        113 times
-Instruction        mls is used         85 times
-Instruction     vstmia is used         76 times
-Instruction      umlal is used         75 times
-Instruction        svc is used         72 times
-Instruction      uxtab is used         69 times
-Instruction        clz is used         68 times
-Instruction     smlabb is used         55 times
-Instruction        pld is used         52 times
-Instruction        ldm is used         41 times
-Instruction      sxtab is used         40 times
-Instruction       addw is used         38 times
-Instruction       vswp is used         28 times
-Instruction      uxtah is used         19 times
-Instruction     vstmdb is used         13 times
-Instruction      sxtah is used         12 times
-Instruction        rsc is used         11 times
-Instruction        rrx is used          9 times
-Instruction       stfe is used          8 times
-Instruction       stfp is used          8 times
-Instruction       adcs is used          8 times
-Instruction        stm is used          8 times
-Instruction       ldfp is used          8 times
-Instruction       ldfe is used          8 times
-Instruction     vldmdb is used          5 times
-Instruction       rbit is used          4 times
-Instruction       bkpt is used          3 times
-Instruction       vmvn is used          3 times
-Instruction        ldc is used          2 times
-Instruction    fldmiax is used          1 times
-Instruction       rscs is used          1 times
-Instruction       ldcl is used          1 times
-Instruction       ssat is used          1 times
-Instruction        stc is used          1 times
-Instruction    fstmiax is used          1 times
+Instruction        mov is used    1428331 times | decode_mov
+Instruction        ldr is used    1181133 times | decode_ldr
+Instruction        add is used    1065935 times | decode_add
+Instruction         bl is used     835527 times | decode_bl
+Instruction          b is used     547924 times | decode_b
+Instruction        str is used     538433 times | decode_str
+Instruction        cmp is used     330601 times | decode_cmp
+Instruction        cbz is used     155987 times | decode_cbz
+Instruction        blx is used     135995 times | decode_blx
+Instruction        pop is used     118732 times | decode_pop
+Instruction       push is used     113136 times | decode_push
+Instruction      ldmia is used      84363 times | decode_ldmia
+Instruction       ldrb is used      70881 times | decode_ldrb
+Instruction        sub is used      69208 times | decode_sub
+Instruction       cbnz is used      61974 times | decode_cbnz
+Instruction       subs is used      55950 times | decode_subs
+Instruction         it is used      55679 times | decode_it
+Instruction       strb is used      52617 times | decode_strb
+Instruction      stmia is used      40441 times | decode_stmia
+Instruction      stmdb is used      34525 times | decode_stmdb
+Instruction        lsl is used      26392 times | decode_lsl
+Instruction        and is used      24389 times | decode_and
+Instruction        orr is used      23024 times | decode_orr
+Instruction       movw is used      21616 times | decode_movw
+Instruction       vldr is used      20493 times | decode_vldr
+Instruction         bx is used      18856 times | decode_bx
+Instruction       ldrd is used      15264 times | decode_ldrd
+Instruction        asr is used      15170 times | decode_asr
+Instruction       strd is used      15058 times | decode_strd
+Instruction       vmov is used      15012 times | decode_vmov
+Instruction        rsb is used      14290 times | decode_rsb
+Instruction        lsr is used      10236 times | decode_lsr
+Instruction       ldrh is used       9915 times | decode_ldrh
+Instruction       ubfx is used       9384 times | decode_ubfx
+Instruction        mul is used       9268 times | decode_mul
+Instruction       vstr is used       8072 times | decode_vstr
+Instruction        bic is used       7865 times | decode_bic
+Instruction       vmrs is used       7408 times | decode_vmrs
+Instruction        mla is used       7381 times | decode_mla
+Instruction        adc is used       7004 times | decode_adc
+Instruction        eor is used       6673 times | decode_eor
+Instruction        tst is used       6197 times | decode_tst
+Instruction       uxtb is used       6075 times | decode_uxtb
+Instruction       strh is used       6019 times | decode_strh
+Instruction        mvn is used       4914 times | decode_mvn
+Instruction        neg is used       4309 times | decode_neg
+Instruction        sbc is used       3545 times | decode_sbc
+Instruction        bfi is used       3496 times | decode_bfi
+Instruction       uxth is used       2234 times | decode_uxth    Missing
+Instruction       vpop is used       2185 times | decode_vpop    Missing
+Instruction      vpush is used       2080 times | decode_vpush   Missing
+Instruction      ldrsb is used       1939 times | decode_ldrsb
+Instruction        tbb is used       1483 times | decode_tbb
+Instruction      ldrsh is used       1446 times | decode_ldrsh
+Instruction        dmb is used       1247 times | decode_dmb
+Instruction      ldmdb is used       1191 times | decode_ldmdb
+Instruction        bfc is used       1167 times | decode_bfc
+Instruction       movt is used        841 times | decode_movt
+Instruction        teq is used        824 times | decode_teq
+Instruction      strex is used        787 times | decode_strex
+Instruction      ldrex is used        787 times | decode_ldrex
+Instruction        cmn is used        738 times | decode_cmn
+Instruction       sxtb is used        731 times | decode_sxtb    Missing
+Instruction      umull is used        523 times | decode_umull
+Instruction        tbh is used        502 times | decode_tbh
+Instruction       sbfx is used        493 times | decode_sbfx    Missing
+Instruction        orn is used        382 times | decode_orn     Missing
+Instruction       sxth is used        366 times | decode_sxth    Missing
+Instruction       vorr is used        329 times | decode_vorr    Missing
+Instruction     smulbb is used        287 times | decode_smulbb
+Instruction       veor is used        271 times | decode_veor    Missing
+Instruction      smull is used        264 times | decode_smull
+Instruction        nop is used        204 times | decode_nop
+Instruction        rev is used        161 times | decode_rev     Missing
+Instruction     vldmia is used        129 times | decode_vldmia  Missing
+Instruction        ror is used        114 times | decode_ror
+Instruction       vand is used        113 times | decode_vand    Missing
+Instruction      smlal is used        113 times | decode_smlal
+Instruction        mls is used         85 times | decode_mls
+Instruction     vstmia is used         76 times | decode_vstmia  Missing
+Instruction      umlal is used         75 times | decode_umlal
+Instruction        svc is used         72 times | decode_svc
+Instruction      uxtab is used         69 times | decode_uxtab   Missing
+Instruction        clz is used         68 times | decode_clz
+Instruction     smlabb is used         55 times | decode_smlabb
+Instruction        pld is used         52 times | decode_pld
+Instruction        ldm is used         41 times | decode_ldm
+Instruction      sxtab is used         40 times | decode_sxtab   Missing
+Instruction       addw is used         38 times | decode_addw
+Instruction       vswp is used         28 times | decode_vswp    Missing
+Instruction      uxtah is used         19 times | decode_uxtah   Missing
+Instruction     vstmdb is used         13 times | decode_vstmdb  Missing
+Instruction        rsc is used         12 times | decode_rsc
+Instruction      sxtah is used         12 times | decode_sxtah   Missing
+Instruction        rrx is used          9 times | decode_rrx
+Instruction       stfe is used          8 times | decode_stfe
+Instruction       stfp is used          8 times | decode_stfp
+Instruction        stm is used          8 times | decode_stm
+Instruction       ldfp is used          8 times | decode_ldfp
+Instruction       ldfe is used          8 times | decode_ldfe
+Instruction     vldmdb is used          5 times | decode_vldmdb  Missing
+Instruction       rbit is used          4 times | decode_rbit    Missing
+Instruction       bkpt is used          3 times | decode_bkpt
+Instruction       vmvn is used          3 times | decode_vmvn    Missing
+Instruction        ldc is used          2 times | decode_ldc
+Instruction    fldmiax is used          1 times | decode_fldmiax
+Instruction       ldcl is used          1 times | decode_ldcl
+Instruction       ssat is used          1 times | decode_ssat    Missing
+Instruction        stc is used          1 times | decode_stc     Missing
+Instruction    fstmiax is used          1 times | decode_fstmiax

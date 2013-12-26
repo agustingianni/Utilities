@@ -12,6 +12,7 @@ import sys
 import operator
 from collections import defaultdict
 
+setsflags_skip = ["cps", "mls", "mrs", "smmls", "srs", "subs", "vabs", "vcls", "vfms", "vmls", "vmrs", "vnmls", "qabs", "vrecps", "vrsqrts"]
 skip_list = ["cbnz", "svc", "lsls", "sbcs", "bics", "rscs", "movs", "muls", "mls", "teq", "adcs", "smmls", "vcls", "vmls"]
 cond_codes = ["eq", "ne", "cs", "cc", "mi", "pl", "vs", "vc", "hi", "ls", "ge", "lt", "gt", "le"]
 def drop_garbage(opname):
@@ -23,6 +24,10 @@ def drop_garbage(opname):
 
 	# Some opcodes end with the leters of condition codes but have nothing to do with them.
 	if t in skip_list:
+		# Remove the 'setsflags' indicator.
+		if t[-1] == "s" and t not in setsflags_skip:
+			return t[:-1]
+
 		return t
 
 	# Drop condition codes.
@@ -36,7 +41,7 @@ def drop_garbage(opname):
 			break
 
 	# Remove the 'setsflags' indicator.
-	if t[-1] == "s" and t not in ["cps", "mls", "mrs", "smmls", "srs", "subs", "vabs", "vcls", "vfms", "vmls", "vmrs", "vnmls", "qabs", "vrecps", "vrsqrts"]:
+	if t[-1] == "s" and t not in setsflags_skip:
 		return t[:-1]
 
 	return t
@@ -63,4 +68,4 @@ with open(sys.argv[1]) as f:
 
 
 for el in sorted(opname_freq.iteritems(), key=operator.itemgetter(1), reverse=True):
-	print "Instruction %10s is used %10d times" % el
+	print "Instruction %10s is used %10d times | decode_%s" % (el[0], el[1], el[0])
