@@ -12,18 +12,18 @@ import sys
 import operator
 from collections import defaultdict
 
-skip_list = ["cbnz", "svc", "lsls", "sbcs", "bics", "rscs", "movs", "muls", "mls", "teq", "adcs"]
+skip_list = ["cbnz", "svc", "lsls", "sbcs", "bics", "rscs", "movs", "muls", "mls", "teq", "adcs", "smmls", "vcls", "vmls"]
 cond_codes = ["eq", "ne", "cs", "cc", "mi", "pl", "vs", "vc", "hi", "ls", "ge", "lt", "gt", "le"]
 def drop_garbage(opname):
 	if opname.startswith("it"):
 		return "it"
 
 	# Drop the wide specifier.
-	t = opname[:-2] if opname.endswith(".w") else opname
+	t = opname[:-2] if (opname.endswith(".w") or opname.endswith(".n")) else opname
 
 	# Some opcodes end with the leters of condition codes but have nothing to do with them.
 	if t in skip_list:
-		return opname
+		return t
 
 	# Drop condition codes.
 	for code in cond_codes:
@@ -34,6 +34,10 @@ def drop_garbage(opname):
 
 			t = t2
 			break
+
+	# Remove the 'setsflags' indicator.
+	if t[-1] == "s" and t not in ["cps", "mls", "mrs", "smmls", "srs", "subs", "vabs", "vcls", "vfms", "vmls", "vmrs", "vnmls", "qabs", "vrecps", "vrsqrts"]:
+		return t[:-1]
 
 	return t
 
