@@ -4,7 +4,7 @@ Utilities
 Uncategorized utilities that do not need their own repository.
 
 
-ARM instruction frequency counter (arm_frequency.py)
+Instruction frequency counter (arm_frequency.py)
 ----------------------------------------------------
 
 The script 'arm_frequency.py' takes as input the output of objdump 
