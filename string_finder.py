@@ -10,7 +10,11 @@ import idaapi
 import idc
 import idautils
 import string
-import enchant
+
+try:
+    import enchant
+except ImportError:
+    print "You need to install pyenchant to use method_1"
 
 def is_printable(input_char):
     return input_char in string.printable
@@ -70,7 +74,7 @@ def method_2():
 
                 else:
                     print "0x%.8x : %s" % (cur_ea - len(cur_string), cur_string)
-                    MakeStr(cur_ea - len(cur_string), cur_ea)
+                    MakeStr(cur_ea - len(cur_string), cur_ea + 1)
                     cur_string = ""
         else:
             cur_string += byte_
