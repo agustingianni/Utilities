@@ -125,6 +125,6 @@ for a in MakeUnique(offsets):
 if size != 0 and size != offsets[-1][0] + offsets[-1][1]:
     rem_size = size - (offsets[-1][0] + offsets[-1][1])
     offset = offsets[-1][0] + offsets[-1][1]
-    print "    %-20s // off=%.2xh-%.2xh reason=padding" % (GuessField(i, offset, rem_size), offset, rem_size)
+    print "    %-20s // off=%.2xh-%.2xh reason=padding" % (GuessField(i, offset, rem_size), offset, offset + rem_size)
 
 print "};"
