@@ -53,7 +53,8 @@ def GuessSize(ea):
 ea = ScreenEA()
 cur_func = get_func(ea)
 
-base_reg = AskStr("r12", "What's the register used as the base for the struct access?").lower()
+base_reg = AskStr("r15", "What's the register used as the base for the struct access?.").lower()
+size = AskLong(0, "Enter the size of the structure, leave 0 if unknown.")
 
 offsets = []
 
@@ -64,13 +65,20 @@ for ea in FunctionInstructionsBlocks(cur_func):
         continue
 
     if GetOpType(ea, 0) == o_displ and base_reg in GetOpnd(ea, 0).lower():
-        offsets.append((GetOperandValue(ea, 0), GuessSize(ea), GetDisasm(ea)))
+        offsets.append((GetOperandValue(ea, 0), GuessSize(ea), ("0x%.8x: " % ea) + GetDisasm(ea)))
 
     if GetOpType(ea, 1) == o_displ and base_reg in GetOpnd(ea, 1).lower():
-        offsets.append((GetOperandValue(ea, 1), GuessSize(ea), GetDisasm(ea)))
+        offsets.append((GetOperandValue(ea, 1), GuessSize(ea), ("0x%.8x: " % ea) + GetDisasm(ea)))
 
 
 size2type = {1 : "uint8_t", 2 : "uint16_t", 4 : "uint32_t", 8 : "uint64_t", 16 : "__m128"}
+def GuessField(i, offset, size):
+    if size in size2type.keys():
+        return "%-8s fld_%d;" % (size2type[size], i)
+
+
+    return "%-8s pad_%d[%d];" % ("uint8_t", i, size)
+
 
 def MakeUnique(offsets):
     unique = []
@@ -98,18 +106,25 @@ def MakeUnique(offsets):
 
 offsets = sorted(offsets, key=lambda tup: tup[0])
 
+print "// User size: 0x%.4x" % size
+print "// Inferred size: 0x%.4x" % (offsets[-1][0] + offsets[-1][1])
 print "struct UnknownStructure {"
 
 i = 0
 cur_offset = 0
 for a in MakeUnique(offsets):
     if cur_offset != a[0]:
-        print "    %s field_%d; // off=%.2xh-%.2xh size=%.2xh reason=padding" % (size2type[a[0] - cur_offset], i, cur_offset, a[0], a[0] - cur_offset)
+        print "    %-20s // off=%.2xh-%.2xh reason=padding" % (GuessField(i, cur_offset, a[0] - cur_offset), cur_offset, a[0])
         i += 1
 
     cur_offset = a[0] + a[1]
-    print "    %s field_%d; // off=%.2xh-%.2xh size=%.2xh reason=%s" % (size2type[a[1]], i, a[0], a[0] + a[1], a[1], a[2])
+    print "    %-20s // off=%.2xh-%.2xh reason=%s" % (GuessField(i, a[0], a[1]), a[0], a[0] + a[1], a[2])
     i += 1
 
+# Check if the user hinted the final size and pad it if needed.
+if size != 0 and size != offsets[-1][0] + offsets[-1][1]:
+    rem_size = size - (offsets[-1][0] + offsets[-1][1])
+    offset = offsets[-1][0] + offsets[-1][1]
+    print "    %-20s // off=%.2xh-%.2xh reason=padding" % (GuessField(i, offset, rem_size), offset, rem_size)
 
 print "};"
