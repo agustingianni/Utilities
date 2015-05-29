@@ -42,7 +42,7 @@ def get_macho_load_commands(filepath):
     return commands
 
 results = []
-for root, subFolders, files in os.walk("/usr/local/bin"):
+for root, subFolders, files in os.walk("/"):
     for name in files:
         abs_name = os.path.join(root, name)
         if os.path.isfile(abs_name) and is_interesting(abs_name):
