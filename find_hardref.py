@@ -3,7 +3,7 @@ Script to find hardcoded references inside an IDA database.
 This is used to find pointers to stuff inside firmware like
 Apple's iBoot.
 
-Coded by Agustin Gianni (agustin.gianni@gmail.com).
+Author: Agustin Gianni (agustingianni@gmail.com)
 """
 import idaapi
 import idc
