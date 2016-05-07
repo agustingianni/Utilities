@@ -2,6 +2,8 @@
 Small idapython script that finds all the signed comparisions and marks
 them with a color.
 It will also find the sign extension instructions and it will also mark them.
+
+Author: Agustin Gianni (agustingianni@gmail.com)
 """
 
 import idautils
@@ -22,7 +24,7 @@ CALL_COLOR = rgb_to_bgr(0xC7F8FF)
 
 signed_ins = ["JL", "JNGE", "JGE", "JNL", "JLE", "JNG", "JG", "JNLE"]
 unsigned_ins = ["JB", "JNAE", "JC", "JNB", "JAE", "JNC", "JBE", "JNA", "JA", "JNBE"]
-interesting_ins = ["MOVSX", "MOVSXD"]
+interesting_ins = ["MOVSX", "MOVSXD", "LODS", "STOS", "REP", "LOOP"]
 
 def set_instruction_color(ea, color):
     idc.SetColor(ea, idc.CIC_ITEM, color)
@@ -39,7 +41,8 @@ def is_unsigned(mnemonic):
 def is_interesting(mnemonic):
     return mnemonic.upper() in interesting_ins
 
-names = set()
+from collections import defaultdict
+freq = {"signed" : defaultdict(int), "interesting" : defaultdict(int)}
 
 i = 0
 for seg_ea in Segments():
@@ -55,15 +58,17 @@ for seg_ea in Segments():
             set_instruction_color(head, UNSIGNED_COLOR)
         
         elif is_signed(mnemonic):
-            #print "Adding signed: 0x%.8x" % head
             set_instruction_color(head, SIGNED_COLOR)
+            freq["signed"][GetFunctionName(head)] += 1
 
         elif is_interesting(mnemonic):
             set_instruction_color(head, INTERESTING_COLOR)
-            names.add(GetFunctionName(head))
+            freq["interesting"][GetFunctionName(head)] += 1
 
         elif is_call(mnemonic):
             set_instruction_color(head, CALL_COLOR)
 
-for name in names:
-    print name
+import operator
+sorted_x = sorted(freq["interesting"].items(), key=operator.itemgetter(1))
+for x in sorted_x:
+    print "Function '%s' has %d interesting properties" % (x[0], x[1])
