@@ -4,6 +4,7 @@ Highly heuristic. Don't trust it blindly, just try to use what it
 gives you and work from that.
 """
 from idautils import *
+from idaapi import get_func
 
 def FunctionInstructionsBlocks(function):
     return filter(lambda x: isCode(GetFlags(x)), list(Heads(function.startEA, function.endEA)))
@@ -104,27 +105,38 @@ def MakeUnique(offsets):
 
     return unique
 
-offsets = sorted(offsets, key=lambda tup: tup[0])
+try:
+    offsets = sorted(offsets, key=lambda tup: tup[0])
 
-print "// User size: 0x%.4x" % size
-print "// Inferred size: 0x%.4x" % (offsets[-1][0] + offsets[-1][1])
-print "struct UnknownStructure {"
+    print "// User size: 0x%.4x" % size
+    print "// Inferred size: 0x%.4x" % (offsets[-1][0] + offsets[-1][1])
+    print "struct UnknownStructure {"
 
-i = 0
-cur_offset = 0
-for a in MakeUnique(offsets):
-    if cur_offset != a[0]:
-        print "    %-20s // off=%.2xh-%.2xh reason=padding" % (GuessField(i, cur_offset, a[0] - cur_offset), cur_offset, a[0])
+    i = 0
+    cur_offset = 0
+    for a in MakeUnique(offsets):
+        if cur_offset != a[0]:
+            print "    %-20s // off=%.2xh-%.2xh reason=padding" % (GuessField(i, cur_offset, a[0] - cur_offset), cur_offset, a[0])
+            i += 1
+
+        cur_offset = a[0] + a[1]
+        print "    %-20s // off=%.2xh-%.2xh reason=%s" % (GuessField(i, a[0], a[1]), a[0], a[0] + a[1], a[2])
         i += 1
 
-    cur_offset = a[0] + a[1]
-    print "    %-20s // off=%.2xh-%.2xh reason=%s" % (GuessField(i, a[0], a[1]), a[0], a[0] + a[1], a[2])
-    i += 1
+    # Check if the user hinted the final size and pad it if needed.
+    if size != 0 and size != offsets[-1][0] + offsets[-1][1]:
+        rem_size = size - (offsets[-1][0] + offsets[-1][1])
+        offset = offsets[-1][0] + offsets[-1][1]
+        print "    %-20s // off=%.2xh-%.2xh reason=padding" % (GuessField(i, offset, rem_size), offset, offset + rem_size)
 
-# Check if the user hinted the final size and pad it if needed.
-if size != 0 and size != offsets[-1][0] + offsets[-1][1]:
-    rem_size = size - (offsets[-1][0] + offsets[-1][1])
-    offset = offsets[-1][0] + offsets[-1][1]
-    print "    %-20s // off=%.2xh-%.2xh reason=padding" % (GuessField(i, offset, rem_size), offset, offset + rem_size)
+    print "};"
+except Exception:
+    print "DEBUG:"
+    for a in offsets:
+        if cur_offset != a[0]:
+            print "    %-20s // off=%.2xh-%.2xh reason=padding" % (GuessField(i, cur_offset, a[0] - cur_offset), cur_offset, a[0])
+            i += 1
 
-print "};"
+        cur_offset = a[0] + a[1]
+        print "    %-20s // off=%.2xh-%.2xh reason=%s" % (GuessField(i, a[0], a[1]), a[0], a[0] + a[1], a[2])
+        i += 1
