@@ -35,15 +35,21 @@ def main():
 
     # Collect and print debugging information about the function.
     to_replace = []
+    invalid_jumps = []
+
     md = Cs(CS_ARCH_X86, CS_MODE_64)
     md.detail = True
 
-    print
     print "// Function details:"
     for i in md.disasm(fbytes, fn_ea):
-        print "// 0x%.8x: %-8s %s" %(i.address, i.mnemonic, i.op_str)
+        print "// 0x%.8x: %-32s %-8s %s" %(i.address, to_hex(i.bytes), i.mnemonic, i.op_str)
         for group in i.groups:
             if group in [X86_GRP_JUMP, X86_GRP_RET]:
+                for op in i.operands:
+                    if op.type == X86_OP_IMM:
+                        if op.value.imm < start or op.value.imm >= (start + size):
+                            invalid_jumps.append((i.address - fn_ea, i))
+
                 print "//"
 
             elif group is X86_GRP_CALL:
@@ -55,7 +61,14 @@ def main():
         tmp = "// 0x%.8x: %-8s %s" %(e[1].address, e[1].mnemonic, e[1].op_str)
         print "// off=0x%.8x ins=%s bytes=%s size=%d" % (e[0], tmp, to_hex(e[1].bytes), e[1].size)
 
+    print "// "
+    print "// Invalid jumps:"
+    for e in invalid_jumps:
+        tmp = "// 0x%.8x: %-8s %s" %(e[1].address, e[1].mnemonic, e[1].op_str)
+        print "// off=0x%.8x ins=%s bytes=%s size=%d" % (e[0], tmp, to_hex(e[1].bytes), e[1].size)
+
     # Dump a shellcode version of the function.
+    print "// "
     print "// Dumped [0x%.8x-0x%.8x]" % (start, start + size)
     n_elements = len(fbytes) / 32
 
