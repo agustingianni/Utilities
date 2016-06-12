@@ -17,3 +17,14 @@ XRef printer (func_references.py)
 
 Small utility to print all the function calls to a given function.
 This is generally used to look for calls to malloc like function.
+
+DumpFunctionBytes.py
+--------------------
+
+IDA Python script that dumps the current function (you need to position
+the cursor on the start of the function) as a shellcode.
+It does a very limited analysis of the function in order to let you know
+that you need to fix call sites to functions.
+
+The main idea of this is being able to extract a function from a binary
+and use it.

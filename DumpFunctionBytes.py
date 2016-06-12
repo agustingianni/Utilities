@@ -55,17 +55,19 @@ def main():
             elif group is X86_GRP_CALL:
                 to_replace.append((i.address - fn_ea, i))
 
-    print "// "
-    print "// Functions to replace:"
-    for e in to_replace:
-        tmp = "// 0x%.8x: %-8s %s" %(e[1].address, e[1].mnemonic, e[1].op_str)
-        print "// off=0x%.8x ins=%s bytes=%s size=%d" % (e[0], tmp, to_hex(e[1].bytes), e[1].size)
+    if len(to_replace):
+        print "// "
+        print "// Functions to replace:"
+        for e in to_replace:
+            tmp = "// 0x%.8x: %-8s %s" %(e[1].address, e[1].mnemonic, e[1].op_str)
+            print "// off=0x%.8x ins=%s bytes=%s size=%d" % (e[0], tmp, to_hex(e[1].bytes), e[1].size)
 
-    print "// "
-    print "// Invalid jumps:"
-    for e in invalid_jumps:
-        tmp = "// 0x%.8x: %-8s %s" %(e[1].address, e[1].mnemonic, e[1].op_str)
-        print "// off=0x%.8x ins=%s bytes=%s size=%d" % (e[0], tmp, to_hex(e[1].bytes), e[1].size)
+    if len(invalid_jumps):
+        print "// "
+        print "// Invalid jumps:"
+        for e in invalid_jumps:
+            tmp = "// 0x%.8x: %-8s %s" %(e[1].address, e[1].mnemonic, e[1].op_str)
+            print "// off=0x%.8x ins=%s bytes=%s size=%d" % (e[0], tmp, to_hex(e[1].bytes), e[1].size)
 
     # Dump a shellcode version of the function.
     print "// "
