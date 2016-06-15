@@ -61,6 +61,8 @@ def main():
     is_call = lambda i: X86_GRP_CALL in i.groups
     is_ret  = lambda i: X86_GRP_RET in i.groups
     is_flow_changing = lambda i: is_jump(i) or is_call(i) or is_ret(i)
+    is_mem_access = lambda i: X86_OP_MEM in [x.type for x in i.operands]
+    is_non_local_mem_access = lambda i: not any(x in i.op_str for x in ["rsp", "esp", "rbp", "ebp"])
 
     # Instruction query results.
     jump_sites = filter(is_jump, instructions)
@@ -68,10 +70,12 @@ def main():
     call_sites = filter(is_call, instructions)
     ret_sites = filter(is_ret, instructions)
     invalid_jump_sites = filter(is_invalid_imm_jump, filter(is_imm_jump, jump_sites))
+    non_local_mem_access_sites = filter(is_non_local_mem_access, filter(is_mem_access, instructions))
 
     # Collect information about jumps and calls that need manual work.
     jumps_to_fix = [(i.address, i) for i in invalid_jump_sites]
     calls_to_fix = [(i.address, i) for i in call_sites]
+    mem_ref_to_fix = [(i.address, i) for i in non_local_mem_access_sites]
 
     # Collect the start of every basic block for pretty printing.
     basic_block_start = []
@@ -99,6 +103,13 @@ def main():
             print "// "
             print "// Invalid jumps:"
             for e in jumps_to_fix:
+                tmp = "%s %s" %(e[1].mnemonic, e[1].op_str)
+                print "// off=0x%.8x ins='%s' bytes=%s size=%d" % (e[0], tmp, to_hex(e[1].bytes), e[1].size)
+
+        if len(mem_ref_to_fix):
+            print "// "
+            print "// Potentially invalid memory accesses:"
+            for e in mem_ref_to_fix:
                 tmp = "%s %s" %(e[1].mnemonic, e[1].op_str)
                 print "// off=0x%.8x ins='%s' bytes=%s size=%d" % (e[0], tmp, to_hex(e[1].bytes), e[1].size)
 
