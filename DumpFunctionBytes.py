@@ -156,7 +156,7 @@ def main():
 
             tmp_name = "function_%d_address" % imm_to_offset[operand_imm]
             tmp = 'dispatch_table.append("\\x48\\xb8", 2);'
-            print "    // TODO: Replace %s with the correct implementation." % tmp_name
+            print "    // TODO: Replace %s with the correct implementation. Called at offset 0x%.8x." % (tmp_name, call_off)
             print "    uintptr_t %s = reinterpret_cast<uintptr_t>(0x4040404040404040);" % tmp_name
             print "    %-60s // 0x%.8x: movabs   rax, %s" % (tmp, cur_trampoline_offset, tmp_name)
             cur_trampoline_offset += 10
