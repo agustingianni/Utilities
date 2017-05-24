@@ -3,11 +3,15 @@ Utilities
 
 Uncategorized utilities that do not need their own repository.
 
+Simple Jack Symbol Porting tool
+-------------------------------
+
+Small dumb utility to port obvious function matches across two IDA databases.
 
 Instruction frequency counter (arm_frequency.py)
 ----------------------------------------------------
 
-The script 'arm_frequency.py' takes as input the output of objdump 
+The script 'arm_frequency.py' takes as input the output of objdump
 on an ARM binary.
 It will show the ammount of times every instruction was used, sorted
 by the most used ones.
@@ -92,7 +96,7 @@ string build_blob() {
     shellcode.append("\x89\xc8", 2);                             // 0x00000026: mov      eax, ecx
     shellcode.append("\x48\x83\xc4\x10", 4);                     // 0x00000028: add      rsp, 0x10
     shellcode.append("\x5d", 1);                                 // 0x0000002c: pop      rbp
-    shellcode.append("\xc3", 1);                                 // 0x0000002d: ret      
+    shellcode.append("\xc3", 1);                                 // 0x0000002d: ret
 
     return shellcode + dispatch_table;
 }
