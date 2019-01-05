@@ -10,6 +10,10 @@ input file.
 
 Example:
 
+$ ls /tmp/InputFiles
+-rw-------  1 anon  staff    47K Jan  4 01:16 ffeb4d186925e9538707719e8374d217e1030943.log
+-rw-------  1 anon  staff   8.8K Jan  3 14:05 ffeb4d186925e9538707719e8374d217e1030943
+
 $ python minset.py -i /tmp/InputFiles -o /tmp/OutputFiles
 Size of the universe: 6257
 Current covered=0 new=4053
